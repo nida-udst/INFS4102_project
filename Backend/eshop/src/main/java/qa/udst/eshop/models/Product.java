@@ -5,10 +5,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.persistence.*;
 
-
+@Document(collection = "products") 
 public abstract class Product {
-
-    private Long id;
+    
+    @Id
+    private String id;
 
     @NotBlank
     private String name;
@@ -30,11 +31,11 @@ public abstract class Product {
         setDesc(desc);
     }
 
-    public void setId(Long id){
+    public void setId(String id){
         this.id = id;
     }
 
-    public Long getId(){
+    public String getId(){
         return id;
     }
 

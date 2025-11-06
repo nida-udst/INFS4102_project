@@ -1,0 +1,15 @@
+@base = http://localhost:8080
+@products = {{base}}/eshop
+
+### POST digital
+POST http://localhost:8080/eshop/equipment
+Content-Type: application/json
+
+{
+  "name": "Adjustable Dumbbells Set",
+  "price": 129.99,
+  "category": "EQUIPMENT",
+  "desc": "A set of adjustable dumbbells ranging from 5kg to 25kg, perfect for home workouts.",
+  "weight": 25,
+  "dimensions": "35x15x20 cm"
+}
