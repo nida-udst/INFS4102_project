@@ -8,9 +8,10 @@ import qa.udst.eshop.repositories.*;
 
 @Service
 public class ProductService {
-    private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    private final ProductRepositoryMongo productRepository;
+
+    public ProductService(ProductRepositoryMongo productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -22,17 +23,18 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product findById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+    public Product findById(String id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
     }
 
-    public Product update(Long id, Product product) {
+    public Product update(String id, Product product) {
         Product existing = findById(id);
         product.setId(existing.getId());
         return productRepository.save(product);
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         Product existing = findById(id);
         productRepository.delete(existing);
     }

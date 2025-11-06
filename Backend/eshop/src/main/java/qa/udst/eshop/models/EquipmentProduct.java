@@ -7,11 +7,13 @@ public class EquipmentProduct extends Product{
     @Min(0)
     @NotNull
     private double weight;
+
     @NotBlank
     private String dimensions;
-
-    public EquipmentProduct(String name, double price, ProductCategory category, @NotBlank double weight, Long dimensions) {
-        super(name, price, category);
+    
+    public EquipmentProduct(String name, double price, ProductCategory category, String desc,
+            @Min(0) @NotNull double weight, @NotBlank String dimensions) {
+        super(name, price, category, desc);
         this.weight = weight;
         this.dimensions = dimensions;
     }
@@ -24,13 +26,15 @@ public class EquipmentProduct extends Product{
         this.weight = weight;
     }
 
-    public Long getDimensions() {
+    public String getDimensions() {
         return dimensions;
     }
 
-    public void setDimensions(Long dimensions) {
+    public void setDimensions(String dimensions) {
         this.dimensions = dimensions;
     }
+
+    
     
     
 
