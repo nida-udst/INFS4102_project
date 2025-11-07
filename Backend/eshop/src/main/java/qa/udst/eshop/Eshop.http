@@ -1,17 +1,114 @@
-@base = http://localhost:8080
-@products = {{base}}/eshop
 
-### POST digital
+
+### Get all products
+GET http://localhost:8080/eshop/product-catalog
+Accept: application/json
+
+
+### Equipment - Dumbbell Set
 POST http://localhost:8080/eshop/equipment
 Content-Type: application/json
 
 {
-  "name": "Adjustable Dumbbells Set",
-  "price": 129.99,
+  "name": "Dumbbell Set",
+  "price": 49.99,
   "category": "EQUIPMENT",
-  "desc": "A set of adjustable dumbbells ranging from 5kg to 25kg, perfect for home workouts.",
-  "weight": 25,
-  "dimensions": "35x15x20 cm"
+  "desc": "Adjustable dumbbells",
+  "imageURL": "https://images.com/dumbbells.jpg",
+  "weightKg": 20.0,
+  "dimensions": "10x20"
 }
 
-DELETE http://localhost:8080/eshop/1
+### Equipment - Kettlebell
+POST http://localhost:8080/eshop/equipment
+Content-Type: application/json
+
+{
+  "name": "Kettlebell",
+  "price": 39.99,
+  "category": "EQUIPMENT",
+  "desc": "16kg kettlebell",
+  "imageURL": "https://images.com/kettlebell.jpg",
+  "weightKg": 16.0,
+  "dimensions": "15x15"
+}
+
+### Clothing - T-Shirt
+POST http://localhost:8080/eshop/clothing
+Content-Type: application/json
+
+{
+  "name": "T-Shirt",
+  "price": 29.99,
+  "category": "CLOTHING",
+  "desc": "Casual cotton t-shirt",
+  "imageURL": "https://images.com/tshirt.jpg",
+  "size": "M"
+}
+
+### Clothing - Joggers
+POST http://localhost:8080/eshop/clothing
+Content-Type: application/json
+
+{
+  "name": "Joggers",
+  "price": 49.99,
+  "category": "CLOTHING",
+  "desc": "Comfortable sweatpants",
+  "imageURL": "https://images.com/joggers.jpg",
+  "size": "L"
+}
+
+### Nutrition - Protein Powder
+POST http://localhost:8080/eshop/nutrition
+Content-Type: application/json
+
+{
+  "name": "Protein Powder",
+  "price": 59.99,
+  "category": "NUTRITION",
+  "desc": "Whey protein 2kg",
+  "imageURL": "https://images.com/protein.jpg",
+  "weightKg": 2.0,
+  "calories": 120
+}
+
+### Nutrition - Energy Bar
+POST http://localhost:8080/eshop/nutrition
+Content-Type: application/json
+
+{
+  "name": "Energy Bar",
+  "price": 3.99,
+  "category": "NUTRITION",
+  "desc": "Chocolate flavored energy bar",
+  "imageURL": "https://images.com/energybar.jpg",
+  "weightKg": 0.05,
+  "calories": 250
+}
+
+### Accessory - Water Bottle
+POST http://localhost:8080/eshop/accessory
+Content-Type: application/json
+
+{
+  "name": "Water Bottle",
+  "price": 12.99,
+  "category": "ACCESSORY",
+  "desc": "Insulated water bottle",
+  "imageURL": "https://images.com/waterbottle.jpg",
+  "material": "Stainless Steel"
+}
+
+### Accessory - Gym Gloves
+POST http://localhost:8080/eshop/accessory
+Content-Type: application/json
+
+{
+  "name": "Gym Gloves",
+  "price": 19.99,
+  "category": "ACCESSORY",
+  "desc": "Leather grip gloves",
+  "imageURL": "https://images.com/gloves.jpg",
+  "material": "Leather"
+}

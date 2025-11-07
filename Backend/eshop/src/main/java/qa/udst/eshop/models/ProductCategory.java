@@ -4,5 +4,5 @@ public enum ProductCategory {
     EQUIPMENT,
     CLOTHING,
     NUTRITION,
-    ACCESSORIES
+    ACCESSORY
 }

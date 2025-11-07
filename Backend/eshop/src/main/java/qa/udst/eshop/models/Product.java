@@ -18,7 +18,6 @@ public abstract class Product {
     @DecimalMin("0.0")
     private double price;
 
-    @NotEmpty
     ProductCategory category; 
 
     @NotBlank
@@ -30,13 +29,13 @@ public abstract class Product {
 
     protected Product() { }
 
-    public Product( String name, double price, ProductCategory category, String desc, String image){
+    public Product( String name, double price, ProductCategory category, String desc, String imageURL){
         
         setName(name);
         setPrice(price);
         setCategory(category);
         setDesc(desc);
-        setImageURL(image);
+        setImageURL(imageURL);
     }
 
     public void setId(String id){

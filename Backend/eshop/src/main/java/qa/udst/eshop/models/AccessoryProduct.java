@@ -9,8 +9,8 @@ public class AccessoryProduct extends Product{
     private String material;
 
     public AccessoryProduct(String name, double price, ProductCategory category, String desc,
-            @NotBlank String material, @NotBlank String image) {
-        super(name, price, category, desc, image);
+            @NotBlank String material, @NotBlank String imageURL) {
+        super(name, price, category, desc, imageURL);
         this.material = material;
     }
 

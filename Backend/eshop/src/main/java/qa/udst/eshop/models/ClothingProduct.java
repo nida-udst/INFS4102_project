@@ -8,8 +8,8 @@ public class ClothingProduct extends Product{
     @NotBlank
     private String size;
 
-    public ClothingProduct(String name, double price, ProductCategory category, String desc, @NotBlank String size, @NotBlank String image) {
-        super(name, price, category, desc, image);
+    public ClothingProduct(String name, double price, ProductCategory category, String desc, @NotBlank String size, @NotBlank String imageURL) {
+        super(name, price, category, desc, imageURL);
         this.size = size;
     }
 

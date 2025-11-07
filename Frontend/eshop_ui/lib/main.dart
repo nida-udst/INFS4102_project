@@ -1,3 +1,4 @@
+import 'package:eshop_ui/screens/product_catalog.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,12 +10,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: 'E-Shop',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blueGrey, useMaterial3: true),
+      home: const ProductCatalog(),
     );
   }
 }

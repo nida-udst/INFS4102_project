@@ -4,7 +4,7 @@ class NutritionProduct extends Product {
   final double weightKg;
   final double calories;
 
-  NutritionProduct({
+  const NutritionProduct({
     required super.id,
     required super.name,
     required super.price,
