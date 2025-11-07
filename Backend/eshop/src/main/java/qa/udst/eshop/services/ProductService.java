@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import qa.udst.eshop.models.*;
 import qa.udst.eshop.repositories.*;
 
+//Service for Products Catalog --- Create seperate service for cart and orders
 @Service
 public class ProductService {
 
