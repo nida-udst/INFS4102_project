@@ -3,14 +3,14 @@ package qa.udst.eshop.models;
 import jakarta.validation.constraints.*;
 import jakarta.persistence.*;
 
-
-public class AccessoriesProduct extends Product{
+//Accessory Model: + Material
+public class AccessoryProduct extends Product{
     @NotBlank
     private String material;
 
-    public AccessoriesProduct(String name, double price, ProductCategory category, String desc,
-            @NotBlank String material) {
-        super(name, price, category, desc);
+    public AccessoryProduct(String name, double price, ProductCategory category, String desc,
+            @NotBlank String material, @NotBlank String image) {
+        super(name, price, category, desc, image);
         this.material = material;
     }
 

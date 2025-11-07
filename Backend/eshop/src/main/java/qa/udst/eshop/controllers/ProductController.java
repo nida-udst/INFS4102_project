@@ -27,6 +27,7 @@ import java.util.*;
 import qa.udst.eshop.models.*;
 import qa.udst.eshop.services.*;
 
+//Controller for Product Catalog --- Create seperate controllers for cart and orders
 @RestController
 @RequestMapping("/eshop")
 public class ProductController {
@@ -60,7 +61,7 @@ public class ProductController {
     }
 
     @PostMapping("/accessory")
-    public ResponseEntity<Product> addAccessory(@Valid @RequestBody AccessoriesProduct product) {
+    public ResponseEntity<Product> addAccessory(@Valid @RequestBody AccessoryProduct product) {
         Product saved = service.add(product);
         return ResponseEntity.status(201).body(saved);
     }
@@ -71,5 +72,16 @@ public class ProductController {
         return ResponseEntity.status(201).body(saved);
     }
 
+    @PutMapping("/product-catalog/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable String id, @Valid @RequestBody Product product) {
+        Product updated = service.update(id, product);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/product-catalog/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build(); // 204 No Content
+    }
     
 }

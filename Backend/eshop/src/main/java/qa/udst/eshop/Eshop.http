@@ -13,3 +13,5 @@ Content-Type: application/json
   "weight": 25,
   "dimensions": "35x15x20 cm"
 }
+
+DELETE http://localhost:8080/eshop/1
