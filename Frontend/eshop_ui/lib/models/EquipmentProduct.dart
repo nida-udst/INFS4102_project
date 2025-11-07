@@ -4,7 +4,7 @@ class EquipmentProduct extends Product {
   final double weightKg;
   final String dimensions;
 
-  EquipmentProduct({
+  const EquipmentProduct({
     required super.id,
     required super.name,
     required super.price,

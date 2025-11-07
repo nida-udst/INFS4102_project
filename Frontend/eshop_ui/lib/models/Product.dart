@@ -6,7 +6,7 @@ class Product {
   final String desc;
   final String imageURL;
 
-  Product({
+  const Product({
     required this.id,
     required this.name,
     required this.price,

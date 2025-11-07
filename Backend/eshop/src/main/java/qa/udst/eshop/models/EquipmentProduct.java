@@ -14,8 +14,8 @@ public class EquipmentProduct extends Product{
     private String dimensions;
     
     public EquipmentProduct(String name, double price, ProductCategory category, String desc,
-            @Min(0) @NotNull double weight, @NotBlank String dimensions, @NotBlank String image) {
-        super(name, price, category, desc, image);
+            @Min(0) @NotNull double weightKg, @NotBlank String dimensions, @NotBlank String imageURL) {
+        super(name, price, category, desc, imageURL);
         this.weightKg = weightKg;
         this.dimensions = dimensions;
     }

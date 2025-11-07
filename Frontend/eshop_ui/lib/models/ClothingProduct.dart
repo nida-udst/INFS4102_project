@@ -3,7 +3,7 @@ import 'Product.dart';
 class ClothingProduct extends Product {
   final String size;
 
-  ClothingProduct({
+  const ClothingProduct({
     required super.id,
     required super.name,
     required super.price,
