@@ -33,4 +33,10 @@ public class CartService {
         cart.removeItem(productId);
         return cartRepo.save(cart);
     }
+
+    public Cart saveCart(Cart cart) {
+        return cartRepository.save(cart);
+    }
+
+
 }
