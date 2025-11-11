@@ -31,7 +31,6 @@ public class OrderService {
         order.setTotal(order.calculateTotal());
         orderRepository.save(order);
 
-        // clear the cart after placing the order
         cart.getItems().clear();
         cartService.saveCart(cart);
 

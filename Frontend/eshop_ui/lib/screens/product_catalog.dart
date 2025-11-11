@@ -1,7 +1,7 @@
 import 'package:eshop_ui/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../widgets/navigation_bar.dart';
+import '../screens/Order_Screens.dart'; // <-- import your OrdersPage
 
 class ProductCatalog extends StatelessWidget {
   const ProductCatalog({super.key});
@@ -47,44 +47,69 @@ class ProductCatalog extends StatelessWidget {
       imageURL: 'https://images.com/waterbottle.jpg',
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 241, 243, 249),
       appBar: const NavBar(title: 'Product Catalog'),
-      body: GridView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        itemCount: products.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          childAspectRatio: 0.7,
-        ),
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return Card(
-            elevation: 3,
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OrdersPage(),
+                  ),
+                );
+              },
+              child: const Text('View Orders'),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.network(product.imageURL, height: 80, fit: BoxFit.cover),
-                const SizedBox(height: 5),
-                Text(
-                  product.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(product.category),
-                Text('\$${product.price.toStringAsFixed(2)}'),
-              ],
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              itemCount: products.length,
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 0.7,
+              ),
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.network(product.imageURL,
+                          height: 80, fit: BoxFit.cover),
+                      const SizedBox(height: 5),
+                      Text(
+                        product.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(product.category),
+                      Text('\$${product.price.toStringAsFixed(2)}'),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 }
+
