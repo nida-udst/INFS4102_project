@@ -1,18 +1,17 @@
 package qa.udst.eshop.models;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Entity
-@Table(name = "orders")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "orders")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
     private double total;
@@ -31,7 +30,7 @@ public class Order {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
+    public String getId() { return id; }
     public List<OrderItem> getItems() { return items; }
     public void setItems(List<OrderItem> items) { this.items = items; }
     public double getTotal() { return total; }

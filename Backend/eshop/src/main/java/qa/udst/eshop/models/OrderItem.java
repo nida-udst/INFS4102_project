@@ -1,13 +1,10 @@
 package qa.udst.eshop.models;
 
-import jakarta.persistence.*;
 
-@Entity
 public class OrderItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    private String id;
 
     private String productId;
     private String productName;
@@ -23,7 +20,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Long getId() { return id; }
+    public String getId() { return id; }
     public String getProductId() { return productId; }
     public String getProductName() { return productName; }
     public double getPrice() { return price; }

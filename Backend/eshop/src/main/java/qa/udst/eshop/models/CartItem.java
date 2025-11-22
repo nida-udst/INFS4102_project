@@ -1,14 +1,10 @@
 package qa.udst.eshop.models;
 
-import jakarta.persistence.*;
 
-@Entity
 public class CartItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    
+    private String id;
 
-    @ManyToOne
     private Product product;
 
     private int quantity;
@@ -20,7 +16,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public Long getId() { return id; }
+    public String getId() { return id; }
     public Product getProduct() { return product; }
     public void setProduct(Product product) { this.product = product; }
     public int getQuantity() { return quantity; }

@@ -1,9 +1,9 @@
 package qa.udst.eshop.models;
 import jakarta.validation.constraints.*;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.*;
 
 //Base Product
 @Document(collection = "products") //MongoDB collection --- Create different collections for cart and orders

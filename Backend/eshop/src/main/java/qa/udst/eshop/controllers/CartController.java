@@ -15,20 +15,20 @@ public class CartController {
     }
 
     @GetMapping("/{id}")
-    public Cart getCart(@PathVariable Long id) {
+    public Cart getCart(@PathVariable String id) {
         return cartService.getCart(id);
     }
 
-    @PostMapping("/{cartId}/add/{productId}")
-    public Cart addProduct(@PathVariable Long cartId,
-                           @PathVariable Long productId,
+    @PostMapping("/add/{productId}")
+    public Cart addProduct(@PathVariable String cartId,
+                           @PathVariable String productId,
                            @RequestParam int quantity) {
         return cartService.addToCart(cartId, productId, quantity);
     }
 
     @DeleteMapping("/{cartId}/remove/{productId}")
-    public Cart removeProduct(@PathVariable Long cartId,
-                              @PathVariable Long productId) {
+    public Cart removeProduct(@PathVariable String cartId,
+                              @PathVariable String productId) {
         return cartService.removeFromCart(cartId, productId);
     }
 }

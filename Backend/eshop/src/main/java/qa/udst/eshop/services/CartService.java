@@ -9,18 +9,18 @@ import java.util.Optional;
 @Service
 public class CartService {
     private final CartRepository cartRepo;
-    private final ProductRepository productRepo;
+    private final ProductRepositoryMongo productRepo;
 
-    public CartService(CartRepository cartRepo, ProductRepository productRepo) {
+    public CartService(CartRepository cartRepo, ProductRepositoryMongo productRepo) {
         this.cartRepo = cartRepo;
         this.productRepo = productRepo;
     }
 
-    public Cart getCart(Long id) {
+    public Cart getCart(String id) {
         return cartRepo.findById(id).orElseGet(() -> cartRepo.save(new Cart()));
     }
 
-    public Cart addToCart(Long cartId, Long productId, int quantity) {
+    public Cart addToCart(String cartId, String productId, int quantity) {
         Cart cart = getCart(cartId);
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -28,14 +28,14 @@ public class CartService {
         return cartRepo.save(cart);
     }
 
-    public Cart removeFromCart(Long cartId, Long productId) {
+    public Cart removeFromCart(String cartId, String productId) {
         Cart cart = getCart(cartId);
         cart.removeItem(productId);
         return cartRepo.save(cart);
     }
 
     public Cart saveCart(Cart cart) {
-        return cartRepository.save(cart);
+        return cartRepo.save(cart);
     }
 
 

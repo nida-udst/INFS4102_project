@@ -1,15 +1,16 @@
 package qa.udst.eshop.models;
 
-import jakarta.persistence.*;
 import java.util.*;
 
-@Entity
-public class Cart {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+@Document(collection = "cart")
+public class Cart {
+
+    @Id
+    private String id;
+
     private List<CartItem> items = new ArrayList<>();
 
     public Cart() {}
@@ -26,7 +27,7 @@ public class Cart {
         items.add(new CartItem(product, quantity));
     }
 
-    public void removeItem(Long productId) {
+    public void removeItem(String productId) {
         items.removeIf(i -> i.getProduct().getId().equals(productId));
     }
 

@@ -18,7 +18,7 @@ public class OrderController {
     }
 
     @PostMapping("/place/{cartId}")
-    public Order placeOrder(@PathVariable Long cartId) {
+    public Order placeOrder(@PathVariable String cartId) {
         return orderService.placeOrder(cartId);
     }
 
@@ -28,12 +28,12 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable Long id) {
+    public Order getOrder(@PathVariable String id) {
         return orderService.getOrder(id);
     }
 
     @PutMapping("/{id}/status")
-    public Order updateOrderStatus(@PathVariable Long id, @RequestParam String status) {
+    public Order updateOrderStatus(@PathVariable String id, @RequestParam String status) {
         return orderService.updateOrderStatus(id, status);
     }
 }

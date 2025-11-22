@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/product_catalog.dart';
+import '../screens/Order_Screens.dart';
 
 class NavBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -36,7 +37,10 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
         _NavButton(
           label: 'Orders',
           onPressed: () {
-            //Add Route to Orders
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const OrdersPage()),
+            );
           },
         ),
         const SizedBox(width: 20),

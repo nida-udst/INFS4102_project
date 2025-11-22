@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/order.dart';
 import '../services/order_service.dart';
+import '../widgets/navigation_bar.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
@@ -22,7 +23,7 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Orders')),
+      appBar: const NavBar(title: 'Orders'),
       body: FutureBuilder<List<Order>>(
         future: futureOrders,
         builder: (context, snapshot) {
@@ -39,7 +40,8 @@ class _OrdersPageState extends State<OrdersPage> {
                   child: ListTile(
                     title: Text('Order #${order.id} - ${order.status}'),
                     subtitle: Text(
-                        'Total: \$${order.total}\nItems: ${order.items.length}\nDate: ${order.createdAt}'),
+                      'Total: \$${order.total}\nItems: ${order.items.length}\nDate: ${order.createdAt}',
+                    ),
                     isThreeLine: true,
                   ),
                 );

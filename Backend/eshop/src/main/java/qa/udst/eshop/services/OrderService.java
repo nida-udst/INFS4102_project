@@ -20,7 +20,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Order placeOrder(Long cartId) {
+    public Order placeOrder(String cartId) {
         Cart cart = cartService.getCart(cartId);
 
         List<OrderItem> orderItems = cart.getItems().stream()
@@ -41,12 +41,12 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Order getOrder(Long id) {
+    public Order getOrder(String id) {
         return orderRepository.findById(id).orElse(null);
     }
 
     @Transactional
-    public Order updateOrderStatus(Long orderId, String status) {
+    public Order updateOrderStatus(String orderId, String status) {
         Order order = getOrder(orderId);
         if (order != null) {
             order.setStatus(status);
