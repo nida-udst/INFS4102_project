@@ -69,3 +69,4 @@ class ProductCatalog extends StatelessWidget {
     );
   }
 }
+
