@@ -1,7 +1,6 @@
 package qa.udst.eshop.models;
 
 import jakarta.validation.constraints.*;
-import jakarta.persistence.*;
 
 //Accessory Model: + Material
 public class AccessoryProduct extends Product{

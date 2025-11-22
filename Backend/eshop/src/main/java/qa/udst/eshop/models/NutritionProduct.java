@@ -1,7 +1,6 @@
 package qa.udst.eshop.models;
 
 import jakarta.validation.constraints.*;
-import jakarta.persistence.*;
 
 //Nutrition Model: + Weight(Kg) minimal 0.03
 public class NutritionProduct extends Product{
