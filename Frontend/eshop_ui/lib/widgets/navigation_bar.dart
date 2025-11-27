@@ -1,3 +1,4 @@
+import 'package:eshop_ui/screens/cart_page.dart';
 import 'package:flutter/material.dart';
 import '../screens/product_catalog.dart';
 import '../screens/Order_Screens.dart';
@@ -29,9 +30,12 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         _NavButton(
-          label: 'Shopping Cart',
+          label: 'Catalog',
           onPressed: () {
-            //Add Route to shopping cart
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const CartScreen()),
+            );
           },
         ),
         _NavButton(

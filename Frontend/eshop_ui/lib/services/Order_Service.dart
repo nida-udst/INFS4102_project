@@ -5,8 +5,9 @@ import '../models/order.dart';
 class OrderService {
   final String baseUrl = 'http://localhost:8080/orders';
 
-  Future<Order> placeOrder(int cartId) async {
+  Future<Order> placeOrder(String cartId) async {
     final response = await http.post(Uri.parse('$baseUrl/place/$cartId'));
+
     if (response.statusCode == 200) {
       return Order.fromJson(jsonDecode(response.body));
     } else {
@@ -16,6 +17,7 @@ class OrderService {
 
   Future<List<Order>> getAllOrders() async {
     final response = await http.get(Uri.parse(baseUrl));
+
     if (response.statusCode == 200) {
       List jsonList = jsonDecode(response.body);
       return jsonList.map((json) => Order.fromJson(json)).toList();
@@ -24,9 +26,11 @@ class OrderService {
     }
   }
 
-  Future<Order> updateOrderStatus(int orderId, String status) async {
-    final response =
-        await http.put(Uri.parse('$baseUrl/$orderId/status?status=$status'));
+  Future<Order> updateOrderStatus(String orderId, String status) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/$orderId/status?status=$status'),
+    );
+
     if (response.statusCode == 200) {
       return Order.fromJson(jsonDecode(response.body));
     } else {
