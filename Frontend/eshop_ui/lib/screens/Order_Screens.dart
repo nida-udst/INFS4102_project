@@ -23,6 +23,7 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 204, 207, 219),
       appBar: const NavBar(title: 'Orders'),
       body: FutureBuilder<List<Order>>(
         future: futureOrders,

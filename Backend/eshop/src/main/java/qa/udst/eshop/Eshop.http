@@ -4,6 +4,8 @@
 GET http://localhost:8080/eshop/product-catalog
 Accept: application/json
 
+POST http://localhost:8080/cart/56751988-0b8e-43bc-b31a-0e15f3310439/add/?quantity=1
+
 
 ### Equipment - Dumbbell Set
 POST http://localhost:8080/eshop/equipment
@@ -101,14 +103,8 @@ Content-Type: application/json
 }
 
 ### Accessory - Gym Gloves
-POST http://localhost:8080/eshop/accessory
+POST http://localhost:8080/cart/5d9879f3-c9bf-499d-b861-3d64549f3d06/add/690dbe5e91bc4c642bf25830?quantity=1
 Content-Type: application/json
 
-{
-  "name": "Gym Gloves",
-  "price": 19.99,
-  "category": "ACCESSORY",
-  "desc": "Leather grip gloves",
-  "imageURL": "https://images.com/gloves.jpg",
-  "material": "Leather"
-}
+POST http://localhost:8080/cart/69284d717a44d4723fdfcbdc/add/690dbe5791bc4c642bf2582f
+Content-Type: application/json

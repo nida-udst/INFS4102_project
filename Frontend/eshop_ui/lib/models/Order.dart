@@ -1,7 +1,7 @@
 import 'Order_item.dart';
 
 class Order {
-  final int id;
+  final String id;
   final List<OrderItem> items;
   final double total;
   final String status;
@@ -17,11 +17,12 @@ class Order {
 
   factory Order.fromJson(Map<String, dynamic> json) {
     var itemsJson = json['items'] as List;
-    List<OrderItem> orderItems =
-        itemsJson.map((i) => OrderItem.fromJson(i)).toList();
+    List<OrderItem> orderItems = itemsJson
+        .map((i) => OrderItem.fromJson(i))
+        .toList();
 
     return Order(
-      id: json['id'],
+      id: json['_id'] ?? json['id'], // Mongo sometimes sends _id
       items: orderItems,
       total: (json['total'] as num).toDouble(),
       status: json['status'],

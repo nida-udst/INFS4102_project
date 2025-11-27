@@ -1,16 +1,13 @@
 package qa.udst.eshop.models;
 
 import java.util.*;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "cart")
 public class Cart {
-
     @Id
     private String id;
-
     private List<CartItem> items = new ArrayList<>();
 
     public Cart() {}
