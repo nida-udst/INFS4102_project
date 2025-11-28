@@ -1,16 +1,12 @@
-import 'product.dart';
-
 class CartItem {
-  final String id;
-  final Product product;
+  final String productId;
   final int quantity;
 
-  CartItem({required this.id, required this.product, required this.quantity});
+  CartItem({required this.productId, required this.quantity});
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
-      id: json['id'] ?? '',
-      product: Product.fromJson(json['product']),
+      productId: json['productId'] ?? '',
       quantity: json['quantity'] ?? 0,
     );
   }

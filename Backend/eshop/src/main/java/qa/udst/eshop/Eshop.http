@@ -90,6 +90,10 @@ Content-Type: application/json
 }
 
 ### Accessory - Water Bottle
+PUT http://localhost:8080/cart/infs4102%40gmail.com/increment/690dbd7591bc4c642bf25826
+Content-Type: application/json
+
+
 POST http://localhost:8080/eshop/accessory
 Content-Type: application/json
 
@@ -102,9 +106,3 @@ Content-Type: application/json
   "material": "Stainless Steel"
 }
 
-### Accessory - Gym Gloves
-POST http://localhost:8080/cart/5d9879f3-c9bf-499d-b861-3d64549f3d06/add/690dbe5e91bc4c642bf25830?quantity=1
-Content-Type: application/json
-
-POST http://localhost:8080/cart/69284d717a44d4723fdfcbdc/add/690dbe5791bc4c642bf2582f
-Content-Type: application/json

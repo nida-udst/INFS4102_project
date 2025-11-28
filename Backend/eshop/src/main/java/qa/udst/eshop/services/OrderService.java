@@ -1,9 +1,12 @@
+// filepath: 
+// ...existing code...
 package qa.udst.eshop.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import qa.udst.eshop.models.*;
 import qa.udst.eshop.repositories.OrderRepository;
+import qa.udst.eshop.repositories.ProductRepositoryMongo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,18 +16,24 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final CartService cartService;
+    private final ProductRepositoryMongo productRepository;
 
-    public OrderService(OrderRepository orderRepository, CartService cartService) {
+    public OrderService(OrderRepository orderRepository, CartService cartService, ProductRepositoryMongo productRepository) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
+        this.productRepository = productRepository;
     }
 
     @Transactional
-    public Order placeOrder(String cartId) {
-        Cart cart = cartService.getCart(cartId);
+    public Order placeOrder(String email) {
+        Cart cart = cartService.getCart(email);
 
         List<OrderItem> orderItems = cart.getItems().stream()
-                .map(ci -> new OrderItem(ci.getProduct(), ci.getQuantity()))
+                .map(ci -> {
+                    Product product = productRepository.findById(ci.getProductId())
+                            .orElseThrow(() -> new RuntimeException("Product not found: " + ci.getProductId()));
+                    return new OrderItem(product, ci.getQuantity());
+                })
                 .collect(Collectors.toList());
 
         Order order = new Order(orderItems);
@@ -55,4 +64,3 @@ public class OrderService {
         return null;
     }
 }
-

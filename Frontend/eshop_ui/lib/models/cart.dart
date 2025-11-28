@@ -1,13 +1,10 @@
 import 'cart_item.dart';
 
 class Cart {
-  final String id;
+  final String id; // user email
   final List<CartItem> items;
 
-  Cart({
-    required this.id,
-    required this.items,
-  });
+  Cart({required this.id, required this.items});
 
   factory Cart.fromJson(Map<String, dynamic> json) {
     final itemsJson = (json['items'] as List?) ?? [];
@@ -16,9 +13,4 @@ class Cart {
       items: itemsJson.map((i) => CartItem.fromJson(i)).toList(),
     );
   }
-
-  double get total => items.fold(
-        0.0,
-        (s, i) => s + (i.product.price * i.quantity),
-      );
 }

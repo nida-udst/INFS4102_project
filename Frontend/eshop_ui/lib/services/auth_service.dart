@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/cart_manager.dart';
+import 'cart_service.dart';
 
 class AuthService {
   final String baseUrl = 'http://localhost:8080/auth';
+  final CartService _cartService = CartService();
 
-  // Login: returns user id or token
+  // Login: returns user id, stores email and creates cart
   Future<String> login(String email, String password) async {
     final res = await http.post(
       Uri.parse('$baseUrl/login'),
@@ -15,12 +18,17 @@ class AuthService {
 
     if (res.statusCode == 200) {
       final userId = res.body;
-      // Save login state locally
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('userId', userId);
+
+      // Store user email (used as cart id)
+      await CartManager.setUserEmail(email);
+      await CartManager.setUserId(userId);
+
+      // Create cart with email as id
+      await _cartService.createCart(email);
+
       return userId;
     } else {
-      throw Exception('Invalid email or password'); // simplified message
+      throw Exception('Login failed: ${res.statusCode}');
     }
   }
 
@@ -33,13 +41,12 @@ class AuthService {
     );
 
     if (res.statusCode != 200) {
-      throw Exception('Failed to register: ${res.body}');
+      throw Exception('Registration failed: ${res.statusCode}');
     }
   }
 
-  // Logout: clear stored user session
+  // Logout: clear stored user session and cart
   Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('userId');
+    await CartManager.clearUserData();
   }
 }

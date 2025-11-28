@@ -1,3 +1,4 @@
+// ...existing code...
 package qa.udst.eshop.controllers;
 
 import org.springframework.web.bind.annotation.*;
@@ -14,33 +15,48 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/{cartId}")
-    public Cart getCart(@PathVariable String cartId) {
-        return cartService.getCart(cartId);
+    // Get or create a cart for the user email
+    @GetMapping("/{email}")
+    public Cart getCart(@PathVariable String email) {
+        return cartService.getCart(email);
     }
 
-    @PostMapping("/{cartId}/add/{productId}")
-    public Cart addProduct(@PathVariable String cartId, @PathVariable String productId, @RequestParam int quantity) {
-        return cartService.addToCart(cartId, productId, quantity);
+    // Explicit create cart
+    @PostMapping("/{email}/create")
+    public Cart createCart(@PathVariable String email) {
+        return cartService.createCart(email);
     }
 
-    @DeleteMapping("/{cartId}/remove/{productId}")
-    public Cart removeProduct(@PathVariable String cartId, @PathVariable String productId) {
-        return cartService.removeFromCart(cartId, productId);
+    // Add product (or increase by quantity)
+    @PostMapping("/{email}/add/{productId}")
+    public Cart addProduct(@PathVariable String email, @PathVariable String productId, @RequestParam int quantity) {
+        return cartService.addToCart(email, productId, quantity);
     }
 
-    @PutMapping("/{cartId}/increment/{productId}")
-    public Cart incrementProduct(@PathVariable String cartId, @PathVariable String productId) {
-        return cartService.incrementQuantity(cartId, productId);
+    // Remove product entry from cart
+    @DeleteMapping("/{email}/remove/{productId}")
+    public Cart removeProduct(@PathVariable String email, @PathVariable String productId) {
+        return cartService.removeFromCart(email, productId);
     }
 
-    @PutMapping("/{cartId}/decrement/{productId}")
-    public Cart decrementProduct(@PathVariable String cartId, @PathVariable String productId) {
-        return cartService.decrementQuantity(cartId, productId);
+    // Clear all items in cart
+    @PostMapping("/{email}/clear")
+    public Cart clearCart(@PathVariable String email) {
+        return cartService.clearCart(email);
     }
 
-    @GetMapping("/{cartId}/total")
-    public double getTotal(@PathVariable String cartId) {
-        return cartService.getTotalCost(cartId);
+    @PutMapping("/{email}/increment/{productId}")
+    public Cart incrementProduct(@PathVariable String email, @PathVariable String productId) {
+        return cartService.incrementQuantity(email, productId);
+    }
+
+    @PutMapping("/{email}/decrement/{productId}")
+    public Cart decrementProduct(@PathVariable String email, @PathVariable String productId) {
+        return cartService.decrementQuantity(email, productId);
+    }
+
+    @GetMapping("/{email}/total")
+    public double getTotal(@PathVariable String email) {
+        return cartService.getTotalCost(email);
     }
 }
