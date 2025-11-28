@@ -106,3 +106,50 @@ Content-Type: application/json
   "material": "Stainless Steel"
 }
 
+### Place Order with Credit Card
+POST http://localhost:8080/orders/place/infs4102@gmail.com
+Content-Type: application/json
+
+{
+  "paymentMethod": "Credit Card"
+}
+
+### Place Order with Debit Card
+POST http://localhost:8080/orders/place/infs4102@gmail.com
+Content-Type: application/json
+
+{
+  "paymentMethod": "Debit Card"
+}
+
+### Place Order with PayPal
+POST http://localhost:8080/orders/place/infs4102@gmail.com
+Content-Type: application/json
+
+{
+  "paymentMethod": "PayPal"
+}
+
+### Place Order with Bank Transfer
+POST http://localhost:8080/orders/place/infs4102@gmail.com
+Content-Type: application/json
+
+{
+  "paymentMethod": "Bank Transfer"
+}
+
+### Get All Orders
+GET http://localhost:8080/orders
+Accept: application/json
+
+### Get Specific Order by ID
+GET http://localhost:8080/orders/507f1f77bcf86cd799439011
+Accept: application/json
+
+### Update Order Status to Completed
+PUT http://localhost:8080/orders/507f1f77bcf86cd799439011/status?status=completed
+Content-Type: application/json
+
+### Update Order Status to Shipped
+PUT http://localhost:8080/orders/507f1f77bcf86cd799439011/status?status=shipped
+Content-Type: application/json

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../widgets/navigation_bar.dart';
@@ -41,8 +42,12 @@ class _ProductCatalogState extends State<ProductCatalog> {
 
   @override
   Widget build(BuildContext context) {
+    final bg = Theme.of(context).scaffoldBackgroundColor;
+    final cardColor = Theme.of(context).cardColor;
+    final textStyle = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 204, 207, 219),
+      backgroundColor: bg,
       appBar: const NavBar(title: 'Product Catalog'),
       body: Column(
         children: [
@@ -103,9 +108,19 @@ class _ProductCatalogState extends State<ProductCatalog> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(
+                    child: Text(
+                      'Error: ${snapshot.error}',
+                      style: textStyle.bodyMedium,
+                    ),
+                  );
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No products available'));
+                  return Center(
+                    child: Text(
+                      'No products available',
+                      style: textStyle.bodyMedium,
+                    ),
+                  );
                 }
 
                 final products = filterAndSort(snapshot.data!);
@@ -126,7 +141,7 @@ class _ProductCatalogState extends State<ProductCatalog> {
                     final product = products[index];
                     return Card(
                       elevation: 3,
-                      color: Colors.white,
+                      color: cardColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -144,11 +159,18 @@ class _ProductCatalogState extends State<ProductCatalog> {
                           const SizedBox(height: 5),
                           Text(
                             product.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: textStyle.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          Text(product.category),
-                          Text('ID: ${product.id}'),
-                          Text('\$${product.price.toStringAsFixed(2)}'),
+                          Text(product.category, style: textStyle.bodySmall),
+                          Text('ID: ${product.id}', style: textStyle.bodySmall),
+                          Text(
+                            '\$${product.price.toStringAsFixed(2)}',
+                            style: textStyle.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           const SizedBox(height: 6),
                           ElevatedButton(
                             onPressed: () async {

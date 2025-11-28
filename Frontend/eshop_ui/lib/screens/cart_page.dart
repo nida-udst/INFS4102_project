@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/navigation_bar.dart';
 import '../services/cart_service.dart';
 import '../services/product_service.dart';
+import '../services/order_service.dart';
 import '../utils/cart_manager.dart';
 import '../models/product.dart';
 
@@ -14,16 +15,39 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final CartService _cartService = CartService();
+  final OrderService _orderService = OrderService();
+
   bool loading = true;
   String? userEmail;
+  String? _selectedPayment;
+
+  // Form fields
+  final _fullNameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _cardNumberController = TextEditingController();
+  final _cardHolderController = TextEditingController();
+  final _expiryController = TextEditingController();
+  final _cvvController = TextEditingController();
 
   List<Map<String, dynamic>> cartItems = [];
-  // each item becomes: { "quantity": 1, "product": Product }
 
   @override
   void initState() {
     super.initState();
     loadCart();
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
+    _cardNumberController.dispose();
+    _cardHolderController.dispose();
+    _expiryController.dispose();
+    _cvvController.dispose();
+    super.dispose();
   }
 
   Future<void> loadCart() async {
@@ -42,7 +66,6 @@ class _CartScreenState extends State<CartScreen> {
         final productId = item.productId;
         final quantity = item.quantity;
 
-        // fetch product from backend
         Product product = await ProductService.fetchProductById(productId);
 
         finalItems.add({"quantity": quantity, "product": product});
@@ -119,18 +142,123 @@ class _CartScreenState extends State<CartScreen> {
     return total;
   }
 
+  bool _validateForm() {
+    if (_fullNameController.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter full name')));
+      return false;
+    }
+    if (_phoneController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter phone number')),
+      );
+      return false;
+    }
+    if (_addressController.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter address')));
+      return false;
+    }
+
+    if (_selectedPayment == 'Credit Card' || _selectedPayment == 'Debit Card') {
+      if (_cardNumberController.text.isEmpty ||
+          _cardNumberController.text.length != 16) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please enter valid 16-digit card number'),
+          ),
+        );
+        return false;
+      }
+      if (_cardHolderController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter cardholder name')),
+        );
+        return false;
+      }
+      if (_expiryController.text.isEmpty ||
+          !RegExp(r'^\d{2}/\d{2}$').hasMatch(_expiryController.text)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter expiry in MM/YY format')),
+        );
+        return false;
+      }
+      if (_cvvController.text.isEmpty || _cvvController.text.length != 3) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter valid 3-digit CVV')),
+        );
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  Future<void> _checkout() async {
+    final email = userEmail ?? await CartManager.getUserEmail();
+    if (email == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please login first')));
+      return;
+    }
+
+    if (_selectedPayment == null || _selectedPayment!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a payment method')),
+      );
+      return;
+    }
+
+    if (!_validateForm()) {
+      return;
+    }
+
+    try {
+      final order = await _orderService.placeOrder(email, _selectedPayment!);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Order placed — ID: ${order.id}')));
+      await _clearCart();
+      _clearFormFields();
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Checkout failed: $e')));
+    }
+  }
+
+  void _clearFormFields() {
+    _fullNameController.clear();
+    _phoneController.clear();
+    _addressController.clear();
+    _cardNumberController.clear();
+    _cardHolderController.clear();
+    _expiryController.clear();
+    _cvvController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bg = Theme.of(context).scaffoldBackgroundColor;
+    final cardColor = Theme.of(context).cardColor;
+    final surface = Theme.of(context).colorScheme.surface;
+    final textStyle = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 204, 207, 219),
+      backgroundColor: bg,
       appBar: const NavBar(title: "My Cart"),
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : cartItems.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
                 "Your cart is empty",
-                style: TextStyle(color: Colors.black, fontSize: 20),
+                style: textStyle.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
               ),
             )
           : Row(
@@ -147,7 +275,7 @@ class _CartScreenState extends State<CartScreen> {
                       final int quantity = item["quantity"];
 
                       return Card(
-                        color: Colors.white,
+                        color: cardColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -166,7 +294,9 @@ class _CartScreenState extends State<CartScreen> {
                                   : Container(
                                       width: 80,
                                       height: 80,
-                                      color: Colors.grey[300],
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withOpacity(0.06),
                                       child: const Icon(Icons.image),
                                     ),
                               const SizedBox(width: 12),
@@ -176,30 +306,24 @@ class _CartScreenState extends State<CartScreen> {
                                   children: [
                                     Text(
                                       product.name,
-                                      style: const TextStyle(
+                                      style: textStyle.titleMedium?.copyWith(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16,
                                       ),
                                     ),
                                     Text(
                                       product.category,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
+                                      style: textStyle.bodySmall,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
                                       '\$${product.price.toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
+                                      style: textStyle.bodyLarge?.copyWith(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
                                       'Subtotal: \$${(product.price * quantity).toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontSize: 13,
+                                      style: textStyle.bodyMedium?.copyWith(
                                         color: Colors.green,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -211,7 +335,9 @@ class _CartScreenState extends State<CartScreen> {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(),
+                                      border: Border.all(
+                                        color: Theme.of(context).dividerColor,
+                                      ),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Row(
@@ -248,9 +374,11 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   const SizedBox(height: 8),
                                   IconButton(
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.delete,
-                                      color: Colors.red,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
                                     ),
                                     onPressed: () => _removeItem(product.id),
                                   ),
@@ -263,117 +391,225 @@ class _CartScreenState extends State<CartScreen> {
                     },
                   ),
                 ),
-                // Right: Order Summary Sidebar
+                // Right: Checkout Sidebar
                 Container(
-                  width: 300,
-                  color: Colors.white,
+                  width: 350,
+                  color: surface,
                   padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Order Summary',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Order Summary',
+                          style: textStyle.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Total Items:'),
-                          Text(
-                            '${cartItems.length}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      const Divider(),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Total:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            '\$${_calculateTotal().toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      const Text(
-                        'Payment Method',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      DropdownButton<String>(
-                        value: 'Credit Card',
-                        isExpanded: true,
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'Credit Card',
-                            child: Text('Credit Card'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Debit Card',
-                            child: Text('Debit Card'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'PayPal',
-                            child: Text('PayPal'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Bank Transfer',
-                            child: Text('Bank Transfer'),
-                          ),
-                        ],
-                        onChanged: (value) {},
-                      ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Processing checkout...'),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Total Items:'),
+                            Text(
+                              '${cartItems.length}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
                               ),
-                            );
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Divider(color: Theme.of(context).dividerColor),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Total:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              '\$${_calculateTotal().toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        // Delivery Info Form
+                        Text(
+                          'Delivery Information',
+                          style: textStyle.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        TextField(
+                          controller: _fullNameController,
+                          decoration: InputDecoration(
+                            labelText: 'Full Name',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _phoneController,
+                          decoration: InputDecoration(
+                            labelText: 'Phone Number',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          keyboardType: TextInputType.phone,
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _addressController,
+                          decoration: InputDecoration(
+                            labelText: 'Address',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          maxLines: 2,
+                        ),
+                        const SizedBox(height: 24),
+                        // Payment Method
+                        Text(
+                          'Payment Method',
+                          style: textStyle.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        DropdownButton<String>(
+                          value: _selectedPayment,
+                          hint: const Text('Select payment method'),
+                          isExpanded: true,
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'Credit Card',
+                              child: Text('Credit Card'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Debit Card',
+                              child: Text('Debit Card'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Pay Later',
+                              child: Text('Pay Later'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Cash on Delivery',
+                              child: Text('Cash on Delivery'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedPayment = value;
+                            });
                           },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        const SizedBox(height: 16),
+                        // Card Details (show only for card payments)
+                        if (_selectedPayment == 'Credit Card' ||
+                            _selectedPayment == 'Debit Card') ...[
+                          Text(
+                            'Card Details',
+                            style: textStyle.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          child: const Text(
-                            'Checkout',
-                            style: TextStyle(fontSize: 16),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _cardNumberController,
+                            decoration: InputDecoration(
+                              labelText: 'Card Number (16 digits)',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                            maxLength: 16,
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _cardHolderController,
+                            decoration: InputDecoration(
+                              labelText: 'Cardholder Name',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _expiryController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Expiry (MM/YY)',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              SizedBox(
+                                width: 100,
+                                child: TextField(
+                                  controller: _cvvController,
+                                  decoration: InputDecoration(
+                                    labelText: 'CVV',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  maxLength: 3,
+                                  obscureText: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _checkout,
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                            ),
+                            child: const Text(
+                              'Checkout',
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: _clearCart,
-                          icon: const Icon(Icons.delete_sweep),
-                          label: const Text('Clear Cart'),
+                        const SizedBox(height: 8),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: _clearCart,
+                            icon: const Icon(Icons.delete_sweep),
+                            label: const Text('Clear Cart'),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],

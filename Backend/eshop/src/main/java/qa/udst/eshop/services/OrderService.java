@@ -1,4 +1,3 @@
-// filepath: 
 // ...existing code...
 package qa.udst.eshop.services;
 
@@ -25,7 +24,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Order placeOrder(String email) {
+    // now accepts paymentMethod
+    public Order placeOrder(String email, String paymentMethod) {
         Cart cart = cartService.getCart(email);
 
         List<OrderItem> orderItems = cart.getItems().stream()
@@ -36,10 +36,12 @@ public class OrderService {
                 })
                 .collect(Collectors.toList());
 
-        Order order = new Order(orderItems);
+        Order order = new Order(orderItems, email, paymentMethod);
         order.setTotal(order.calculateTotal());
+        order.setStatus("pending");
         orderRepository.save(order);
 
+        // clear cart after placing order
         cart.getItems().clear();
         cartService.saveCart(cart);
 
