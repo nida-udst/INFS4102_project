@@ -1,26 +1,20 @@
+// ...existing code...
 package qa.udst.eshop.models;
 
 public class CartItem {
-    private String id;
-    private Product product;
+    private String productId;
     private int quantity;
 
     public CartItem() {}
 
-    public CartItem(Product product, int quantity) {
-        this.product = product;
+    public CartItem(String productId, int quantity) {
+        this.productId = productId;
         this.quantity = quantity;
     }
 
-    public String getId() { return id; }
-
-    public Product getProduct() { return product; }
-
-    public void setProduct(Product product) { this.product = product; }
+    public String getProductId() { return productId; }
+    public void setProductId(String productId) { this.productId = productId; }
 
     public int getQuantity() { return quantity; }
-
     public void setQuantity(int quantity) { this.quantity = quantity; }
-
-    public double getSubtotal() { return product.getPrice() * quantity; }
 }

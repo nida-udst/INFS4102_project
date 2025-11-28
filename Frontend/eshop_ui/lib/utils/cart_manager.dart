@@ -1,34 +1,37 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 class CartManager {
-  static const _key = 'local_cart_id';
+  static const _userEmailKey = 'user_email';
+  static const _userIdKey = 'user_id';
 
-  /// Get existing cartId or create a new one
-  static Future<String> getOrCreateCartId() async {
+  /// Store user email after login (used as cart id)
+  static Future<void> setUserEmail(String email) async {
     final prefs = await SharedPreferences.getInstance();
-    final existing = prefs.getString(_key);
-    if (existing != null && existing.isNotEmpty) return existing;
-    final id = const Uuid().v4();
-    await prefs.setString(_key, id);
-    return id;
+    await prefs.setString(_userEmailKey, email);
   }
 
-  /// Clear the cart ID
-  static Future<void> clearCartId() async {
+  /// Get stored user email
+  static Future<String?> getUserEmail() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_key);
+    return prefs.getString(_userEmailKey);
   }
 
-  static const _userKey = 'user_id';
-
+  /// Store user id after login
   static Future<void> setUserId(String userId) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_userKey, userId);
+    await prefs.setString(_userIdKey, userId);
   }
 
+  /// Get stored user id
   static Future<String?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_userKey);
+    return prefs.getString(_userIdKey);
+  }
+
+  /// Clear all user data on logout
+  static Future<void> clearUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_userEmailKey);
+    await prefs.remove(_userIdKey);
   }
 }

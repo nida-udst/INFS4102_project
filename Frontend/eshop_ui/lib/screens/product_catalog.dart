@@ -15,6 +15,7 @@ class ProductCatalog extends StatefulWidget {
 class _ProductCatalogState extends State<ProductCatalog> {
   String selectedCategory = "All";
   String sortBy = "None";
+  final CartService _cartService = CartService();
 
   List<Product> filterAndSort(List<Product> products) {
     List<Product> filtered = products;
@@ -41,7 +42,7 @@ class _ProductCatalogState extends State<ProductCatalog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 102, 109, 131),
+      backgroundColor: const Color.fromARGB(255, 204, 207, 219),
       appBar: const NavBar(title: 'Product Catalog'),
       body: Column(
         children: [
@@ -146,18 +147,44 @@ class _ProductCatalogState extends State<ProductCatalog> {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(product.category),
-                          Text(product.desc),
+                          Text('ID: ${product.id}'),
                           Text('\$${product.price.toStringAsFixed(2)}'),
                           const SizedBox(height: 6),
                           ElevatedButton(
                             onPressed: () async {
-                              final cartId =
-                                  await CartManager.getOrCreateCartId();
+                              final userEmail =
+                                  await CartManager.getUserEmail();
+                              if (userEmail == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Please login first'),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              final productId = product.id.trim();
+                              if (productId.isEmpty) {
+                                debugPrint(
+                                  'Add to cart failed — product.id is empty for product: ${product.name}',
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Failed to add: product id missing',
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+
                               try {
-                                await CartService().addToCart(
-                                  cartId,
-                                  product.id,
-                                  1,
+                                debugPrint(
+                                  'Adding productId=$productId to cart for user=$userEmail',
+                                );
+                                await _cartService.incrementQuantity(
+                                  userEmail,
+                                  productId,
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -167,6 +194,7 @@ class _ProductCatalogState extends State<ProductCatalog> {
                                   ),
                                 );
                               } catch (e) {
+                                debugPrint('Add to cart error: $e');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('Failed to add product: $e'),

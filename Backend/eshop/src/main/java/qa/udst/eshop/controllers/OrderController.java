@@ -1,3 +1,4 @@
+// ...existing code...
 package qa.udst.eshop.controllers;
 
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,10 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/place/{cartId}")
-    public Order placeOrder(@PathVariable String cartId) {
-        return orderService.placeOrder(cartId);
+    // place order using user email as the cart id
+    @PostMapping("/place/{email}")
+    public Order placeOrder(@PathVariable String email) {
+        return orderService.placeOrder(email);
     }
 
     @GetMapping

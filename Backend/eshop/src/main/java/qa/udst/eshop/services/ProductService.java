@@ -31,7 +31,7 @@ public class ProductService {
 
     public Product update(String id, Product product) {
         Product existing = findById(id);
-        product.setId(existing.getId());
+        product.setId(existing.getProductId());
         return productRepository.save(product);
     }
 

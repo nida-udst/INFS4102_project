@@ -30,7 +30,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         _NavButton(
-          label: 'Catalog',
+          label: 'Shopping Cart',
           onPressed: () {
             Navigator.pushReplacement(
               context,

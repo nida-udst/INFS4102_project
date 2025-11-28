@@ -42,7 +42,7 @@ public abstract class Product {
         this.id = id;
     }
 
-    public String getId(){
+    public String getProductId(){
         return id;
     }
 
