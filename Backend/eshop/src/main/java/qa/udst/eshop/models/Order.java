@@ -1,3 +1,4 @@
+// ...existing code...
 package qa.udst.eshop.models;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,9 @@ public class Order {
 
     @Id
     private String id;
+
+    private String userEmail;
+    private String paymentMethod;
 
     private List<OrderItem> items = new ArrayList<>();
 
@@ -30,7 +34,22 @@ public class Order {
         this.createdAt = LocalDateTime.now();
     }
 
+    // new constructor including user email and payment method
+    public Order(List<OrderItem> items, String userEmail, String paymentMethod) {
+        this.items = items;
+        this.userEmail = userEmail;
+        this.paymentMethod = paymentMethod;
+        this.total = calculateTotal();
+        this.status = "pending";
+        this.createdAt = LocalDateTime.now();
+    }
+
     public String getId() { return id; }
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+
     public List<OrderItem> getItems() { return items; }
     public void setItems(List<OrderItem> items) { this.items = items; }
     public double getTotal() { return total; }
@@ -44,3 +63,4 @@ public class Order {
         return items.stream().mapToDouble(OrderItem::getSubtotal).sum();
     }
 }
+// ...existing code...

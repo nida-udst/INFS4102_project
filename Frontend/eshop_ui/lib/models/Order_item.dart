@@ -13,10 +13,10 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
     return OrderItem(
-      productId: json['productId'],
-      productName: json['productName'],
-      price: (json['price'] as num).toDouble(),
-      quantity: json['quantity'],
+      productId: json['productId'] ?? '',
+      productName: json['productName'] ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      quantity: json['quantity'] ?? 0,
     );
   }
 

@@ -34,4 +34,9 @@ class CartManager {
     await prefs.remove(_userEmailKey);
     await prefs.remove(_userIdKey);
   }
+
+  static Future<void> clearUserEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_userEmailKey);
+  }
 }

@@ -6,6 +6,7 @@ import qa.udst.eshop.models.Order;
 import qa.udst.eshop.services.OrderService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/orders")
@@ -19,9 +20,14 @@ public class OrderController {
     }
 
     // place order using user email as the cart id
+    // now accepts paymentMethod in request body JSON: { "paymentMethod": "Credit Card" }
     @PostMapping("/place/{email}")
-    public Order placeOrder(@PathVariable String email) {
-        return orderService.placeOrder(email);
+    public Order placeOrder(@PathVariable String email, @RequestBody(required = false) Map<String, String> body) {
+        String paymentMethod = "unknown";
+        if (body != null && body.get("paymentMethod") != null) {
+            paymentMethod = body.get("paymentMethod");
+        }
+        return orderService.placeOrder(email, paymentMethod);
     }
 
     @GetMapping
@@ -39,3 +45,4 @@ public class OrderController {
         return orderService.updateOrderStatus(id, status);
     }
 }
+// ...existing code...
