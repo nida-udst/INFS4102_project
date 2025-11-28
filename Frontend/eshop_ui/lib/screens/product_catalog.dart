@@ -1,4 +1,4 @@
-// ...existing code...
+
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../widgets/navigation_bar.dart';
@@ -240,4 +240,4 @@ class _ProductCatalogState extends State<ProductCatalog> {
     );
   }
 }
-// ...existing code...
+

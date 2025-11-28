@@ -4,7 +4,7 @@ package qa.udst.eshop.models;
 public class OrderItem {
 
 
-    private Long id;
+    private String id;
 
     private String productId;
     private String productName;
@@ -20,7 +20,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Long getId() { return id; }
+    public String getId() { return id; }
     public String getProductId() { return productId; }
     public String getProductName() { return productName; }
     public double getPrice() { return price; }
