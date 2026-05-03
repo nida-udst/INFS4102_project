@@ -6,9 +6,12 @@ This repository consists of 2 projects:
 - Mobile App project Daily flow
 
   Eshop is an ecommerce desktop application built with flutter
+  
   DailyFlow is a mobile routine app built with react-native
 
+
   Eshop was developed as a group project
+  
   DailyFlow is a seperate individual project
   
 
