@@ -111,6 +111,8 @@ flutter run
 ```
 
 ## Mobile App: DailyFlow
+DailyFlow is a Routine App built to track and modify your daily routines
+
 ### Project Structure
 ```
 mobile_app
@@ -134,3 +136,32 @@ mobile_app
 ├── config.js
 └── index.js
 ```
+### Screens
+- Home: Main Screen
+  - List of routine tasks
+  - Streak: Tracks number of consecutive days
+  
+- Edit:
+  -  Add, Modify, Delete Tasks
+-  Progress: tracking progresses
+  - Max Streak
+  - Current Streak
+  - Previously Missed Tasks
+  
+- profile:
+  - User information
+  - Logout Button
+  - Routine Modes: Leisure (Non-time restrictive), Sequential (time restrictive)
+  
+- Registration: Login Screen
+
+### Scenarios:
+- User completes all tasks of the day and continues streak.
+- User fails to complete tasks within that day and loses streak:
+  - If streak > max streak: Max streak is updated
+  - Missed tasks recorded in progress
+- User adds new tasks before completing all existing tasks: task is included for that day.
+- User adds new tasks after completing all existing tasks: task is not included for that day and will be activated the next day.
+- User activates leisure mode (default): tasks can be completed non-sequentially and not restricted to time.
+- User activates sequential mode: tasks are time-restricted and must be done sequentially.
+  - User loses streak after missing one tasks within the assigned time.
