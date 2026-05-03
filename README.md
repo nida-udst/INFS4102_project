@@ -13,7 +13,8 @@ This repository consists of 2 seperate projects:
 PLEASE EXTRACT THE MOBILE APP FOLDER OUT OF THE MAIN DESKTOP APP PROJECT BEFORE RUNNING
   
 
-## Eshop Project Structure
+## Eshop Desktop Application
+### Project Structure
 ```
 INFS4102_Project
 ├── .vscode
