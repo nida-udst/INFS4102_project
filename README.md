@@ -3,12 +3,13 @@
 ## Vora Internship Application
 This repository consists of 2 projects:
 - Main Deskptop project Eshop:
--   Ecommerce Desktop Application built with Flutter
--   Group Project
+  -   Ecommerce Desktop Application built with Flutter
+  -   Group Project
+  
 - Mobile App project Daily flow:
--   Mobile Routine App built with React-Native
--   Individual Project
-
+  -   Mobile Routine App built with React-Native
+  -   Individual Project
+  
 PLEASE EXTRACT THE MOBILE APP FOLDER OUT OF THE MAIN DESKTOP APP PROJECT BEFORE RUNNING
   
 
