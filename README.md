@@ -1,12 +1,12 @@
 # INFS4102
 
 ## Vora Internship Application
-This repository consists of 2 projects:
+This repository consists of 2 seperate projects:
 - Main Deskptop project Eshop:
   -   Ecommerce Desktop Application built with Flutter
   -   Group Project
   
-- Mobile App project Daily flow:
+- Mobile App project Daily flow: mobile_app/
   -   Mobile Routine App built with React-Native
   -   Individual Project
   
@@ -108,4 +108,29 @@ create a new terminal and run the frontend
 cd frontend
 cd eshop_ui
 flutter run
+```
+
+## Mobile App: DailyFlow
+### Project Structure
+```
+mobile_app
+├── components/
+│   ├──tasks.js
+│   └──taskContext.js
+│
+├── context
+│   ├──progressContext.js
+│   └──taskContext.js
+│
+└──screens/
+│   ├──edit.js
+│   ├──home.js
+│   ├──profile.js
+│   ├──progress.js
+│   └──Registration.js
+│
+├── App.js
+├── context
+├── config.js
+└── index.js
 ```
