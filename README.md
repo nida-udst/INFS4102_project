@@ -1,6 +1,6 @@
 # INFS4102
 
-#Vora Internship Application
+## Vora Internship Application
 This repository consists of 2 projects:
 - Main Deskptop project Eshop
 - Mobile App project Daily flow
