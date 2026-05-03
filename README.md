@@ -144,10 +144,11 @@ mobile_app
   
 - Edit:
   -  Add, Modify, Delete Tasks
--  Progress: tracking progresses
-  - Max Streak
-  - Current Streak
-  - Previously Missed Tasks
+
+- Progress: Tracking
+  -  Max Streak
+  -  Current Streak
+  -  Previous tasks missed
   
 - profile:
   - User information
