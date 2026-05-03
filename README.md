@@ -2,17 +2,14 @@
 
 ## Vora Internship Application
 This repository consists of 2 projects:
-- Main Deskptop project Eshop
-- Mobile App project Daily flow
+- Main Deskptop project Eshop:
+-   Ecommerce Desktop Application built with Flutter
+-   Group Project
+- Mobile App project Daily flow:
+-   Mobile Routine App built with React-Native
+-   Individual Project
 
-  Eshop is an ecommerce desktop application built with flutter
-  
-  DailyFlow is a mobile routine app built with react-native
-
-
-  Eshop was developed as a group project
-  
-  DailyFlow is a seperate individual project
+PLEASE EXTRACT THE MOBILE APP FOLDER OUT OF THE MAIN DESKTOP APP PROJECT BEFORE RUNNING
   
 
 ## Eshop Project Structure
