@@ -1,6 +1,5 @@
 # INFS4102
 
-## Vora Internship Application
 This repository consists of 2 seperate projects:
 - Main Deskptop project Eshop:
   -   Ecommerce Desktop Application built with Flutter
